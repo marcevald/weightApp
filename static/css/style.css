@@ -43,7 +43,9 @@
 td[colspan="2"] {
     text-align: center;
 }
-
+td[colspan="3"] {
+    text-align: center;
+}
  /* unvisited link */
 a:link {
   color: White;
