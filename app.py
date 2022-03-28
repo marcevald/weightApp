@@ -69,7 +69,7 @@ def calculateBMI(height, weight):
     return bmi
 
 app = Flask(__name__)
-sqlEngine = create_engine('mysql+pymysql://root:root@localhost/db', echo=False)
+sqlEngine = create_engine('mysql+pymysql://pi:Me200790Hc@localhost/db', echo=False)
 
 @app.route('/')
 def hello_world():    
