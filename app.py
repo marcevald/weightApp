@@ -86,6 +86,9 @@ def hello_world():
 def enterWeight():
     user = request.form['user']
     weight = request.form['weight']
+
+    if weight == None:
+        return "You Must Input a Valid Weight"
     
     time = datetime.datetime.now()
     time = f"{time.year}-{time.month}-{time.day} {time.hour}:{time.minute}:{time.second}"
