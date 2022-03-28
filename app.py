@@ -39,6 +39,8 @@ def getUsersAndWeightList():
         sinceLast = 0
         weightLoss = 0 
         relative = 0
+
+        timestamp = None
         
         if len(frameWeights) > 0:
             
