@@ -1,0 +1,72 @@
+<html>
+    <head title="De Dovne Hunde">
+    <link rel="stylesheet" href="static/css/style.css">
+    </head>
+    <body>
+
+<div class="container">
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th><a href="/" > Name </a> </th>
+            <th><a href="/byweight" >Weight</a></th>
+            <th><a href="/bytotalloss" >Total Loss</a></th>
+            <th><a href="/byrel" > % Loss </a> </th>
+            <th>Since Last</th>
+            <th><a href="/bybmi" >BMI</a> </th>
+            <th>Time </th>
+        </tr>
+    </thead>
+    
+    <tbody>
+            {% for row in rows %}
+        <tr>
+            {% for i, r in enumerate(row) %}
+            {% if i == 4 %}
+                <td> <p class='val'>{{ r }} </p> </td>
+            {% else %}
+                <td> <p>{{ r }} </p> </td>
+            {% endif %}
+
+            {% endfor %}
+        </tr>
+            {% endfor %}
+
+
+        <tr>
+            <form action="/enterweight" enctype="multipart/form-data" method="POST" >
+                <td colspan="2">
+                    <select name="user" id="user_select">
+                        {% for u in users %}
+                        <option value="{{u}}"> {{u}} </option>
+                        {% endfor %}
+                    </select>
+                </td>
+                <td colspan="2"> <input type="number" step=0.1 name="weight" />  </td>
+                <td colspan="2"> <button class="submit"> Enter Weight  </button> </td>
+            </form>
+            
+        </tr>
+    </tbody>
+
+</table>
+</div>
+<script>
+    
+    function f_color(){
+            const vals = document.getElementsByClassName('val');
+            for(i=0; i < vals.length; i++){
+                if(vals[i].innerText.split(" ")[0] > 0){
+                        vals[i].style["color"] = "green";
+                }
+                else
+                    vals[i].style["color"] = "red";
+            }
+        }
+    f_color();
+
+</script>
+
+
+    </body>
+</html>
