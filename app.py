@@ -87,7 +87,7 @@ def enterWeight():
     user = request.form['user']
     weight = request.form['weight']
 
-    if weight == None:
+    if not weight:
         return "You Must Input a Valid Weight"
     
     time = datetime.datetime.now()
