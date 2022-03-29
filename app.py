@@ -147,9 +147,11 @@ def plot():
     
     weights = []
     dates = []
+    
+    fig = go.Figure()
 
     if user == 'all':
-        fig = go.Figure()
+        
         
         for i, user in enumerate(users):
             frameWeights = pd.read_sql(f"select * from Weights where `User` = '{user}'", con=sqlEngine)
@@ -157,7 +159,7 @@ def plot():
             dates.append( list( frameWeights['Time'] ) )
             
             fig.add_trace(
-            go.Scatter(x=dates[i], y=weights[i], mode='lines', name=user)
+            go.Scatter(x=dates[i], y=weights[i], mode='lines+markers', name=user)
             )
         fig.update_layout(
                    xaxis_title='Date and Time',
@@ -167,7 +169,13 @@ def plot():
     
         weights = list( frameWeights['Weight'] )
         dates = list( frameWeights['Time'] )
-        fig = px.line(x=dates, y = weights)
+        
+        fig.add_trace(
+            go.Scatter(x=dates, y=weights, mode='lines+markers', name=user)
+            )
+        fig.update_layout(
+                   xaxis_title='Date and Time',
+                   yaxis_title='Weight[Kg]')
 
     #fig.update_xaxes(tickformat="%b %d %I \n%Y")
     graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
