@@ -69,3 +69,26 @@ a:link {
   text-decoration: none;
 }
 
+
+.inline {
+  display: inline;
+}
+
+.link-button {
+  background: none;
+  border: none;
+  color: Black;
+  text-decoration: None;
+  cursor: pointer;
+  /*font-size: 1em;*/
+  /*font-family: serif;*/
+}
+.link-button:focus {
+  outline: none;
+}
+.link-button:active {
+  color:red;
+}
+.link-button:hover {
+  color: orange;
+}

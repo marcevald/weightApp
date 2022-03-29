@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
+import plotly.graph_objects as go
 from sqlalchemy import create_engine, insert
 import pymysql 
 import datetime
@@ -71,7 +72,8 @@ def calculateBMI(height, weight):
     return bmi
 
 app = Flask(__name__)
-sqlEngine = create_engine('mysql+pymysql://pi:Me200790Hc@localhost/db', echo=False)
+sqlEngine = create_engine('mysql+pymysql://root:root@localhost/db', echo=False)
+#sqlEngine = create_engine('mysql+pymysql://pi:Me200790Hc@localhost/db', echo=False)
 
 @app.route('/')
 def hello_world():    
@@ -136,6 +138,43 @@ def total():
     rows = formatRows(rows) 
 
     return render_template('index.htm', users=users, rows=rows)
+
+@app.route('/plot', methods = ['POST'])
+def plot():
+
+    user = request.form['user']
+    users, rows = getUsersAndWeightList()
+    
+    weights = []
+    dates = []
+
+    if user == 'all':
+        fig = go.Figure()
+        
+        for i, user in enumerate(users):
+            frameWeights = pd.read_sql(f"select * from Weights where `User` = '{user}'", con=sqlEngine)
+            weights.append( list( frameWeights['Weight'] ) )
+            dates.append( list( frameWeights['Time'] ) )
+            
+            fig.add_trace(
+            go.Scatter(x=dates[i], y=weights[i], mode='lines', name=user)
+            )
+        fig.update_layout(
+                   xaxis_title='Date and Time',
+                   yaxis_title='Weight[Kg]')
+    else:
+        frameWeights = pd.read_sql(f"select * from Weights where `User` = '{user}'", con=sqlEngine)
+    
+        weights = list( frameWeights['Weight'] )
+        dates = list( frameWeights['Time'] )
+        fig = px.line(x=dates, y = weights)
+
+    #fig.update_xaxes(tickformat="%b %d %I \n%Y")
+    graphJSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+
+    header="Development of Weight over Time"
+    
+    return render_template('plot.html', graphJSON=graphJSON, header=header)
 
 @app.context_processor
 def inject_enumerate():

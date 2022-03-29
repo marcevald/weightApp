@@ -9,7 +9,7 @@
     </head>
     <body>
 
-<div class="container" style="overflow-x:auto;">
+<div class="container">
 <table class="styled-table">
     <thead>
         <tr>
@@ -27,16 +27,26 @@
             {% for row in rows %}
         <tr>
             {% for i, r in enumerate(row) %}
+
             {% if i == 4 %}
                 <td> <p class='val'>{{ r }} </p> </td>
+            {% elif i == 0 %}
+            
+            <td>
+            <form method="post" action="/plot" class="inline">
+                <input type="hidden" name="plot" value="plot">
+                <button type="submit" name="user" value="{{r}}" class="link-button">
+                {{r}}
+                </button>
+            </form>
+            </td>
             {% else %}
-                <td> <p>{{ r }} </p> </td>
+                <td> <p> {{ r }} </p> </td>
             {% endif %}
 
             {% endfor %}
         </tr>
             {% endfor %}
-
 
         <tr>
             <form action="/enterweight" enctype="multipart/form-data" method="POST" >
@@ -55,6 +65,14 @@
     </tbody>
 
 </table>
+<div class="plotlink">
+    <form method="post" action="/plot" class="inline">
+        <input type="hidden" name="plot" value="plot">
+        <button type="submit" name="user" value="all" class="link-button">
+        Plot Together
+        </button>
+    </form>
+</div>
 </div>
 <script>
     
