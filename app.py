@@ -13,15 +13,15 @@ def formatRows(rows):
     for r, row in enumerate(rows):
         for c, col in enumerate(row):
             if c == 1:
-                rows[r][c] = f"{col:.2f} Kg"
+                rows[r][c] = f"{col:.1f} Kg"
             if c == 2:
-                rows[r][c] = f"{col:.2f} Kg"
+                rows[r][c] = f"{col:.1f} Kg"
             if c == 3:
                 rows[r][c] = f"{col:.2f} %"
             if c == 4:
-                rows[r][c] = f"{col:.2f} Kg"
+                rows[r][c] = f"{col:.1f} Kg"
             if c == 5:
-                rows[r][c] = f"{col:.2f} Kg/m²"
+                rows[r][c] = f"{col:.1f} Kg/m²"
     return rows
 
 def getUsersAndWeightList():
