@@ -194,7 +194,7 @@ def user():
 
     rows = frameWeights.values.tolist()
     rows = np.array(rows)
-
+    rows = np.flip(rows, axis=0)
     ids = rows[:, 0].copy()
 
     

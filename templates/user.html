@@ -39,7 +39,7 @@
             {% if i == 3 %}
             <td>
             <form method="post" action="/modify" class="inline">
-                <input type="number" step=0.1 value="{{r}}" name="weight">
+                <input type="number" step="0.1" value="{{r}}" name="weight">
                 <input type="hidden" value="{{user}}" name="user">
                 <input type="hidden" value="{{ids[j]}}" name="id">
                 <button type="submit" name="user" class="link-button">
@@ -48,13 +48,7 @@
             </form>
             </td>
             {% else %}
-            
-                {% if r == 'NaT' %}
-                    <td> <p> Not Modified </p> </td>
-                {% else %}
-                    <td> <p> {{ r }} </p> </td>
-                {% endif %}
-
+            <td> <p> {{ r }} </p> </td>
             {% endif %}
 
             {% endfor %}
