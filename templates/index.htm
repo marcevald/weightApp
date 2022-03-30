@@ -8,6 +8,14 @@
     <link rel="stylesheet" href="static/css/style.css">
     </head>
     <body>
+<div class="plotlink">
+    <form method="post" action="/plot" class="inline">
+        <input type="hidden" name="plot" value="plot">
+        <button type="submit" name="user" value="all" class="link-button">
+        Plot Progress Of All Members
+        </button>
+    </form>
+</div>
 
 <div class="container">
 <table class="styled-table">
@@ -65,14 +73,6 @@
     </tbody>
 
 </table>
-<div class="plotlink">
-    <form method="post" action="/plot" class="inline">
-        <input type="hidden" name="plot" value="plot">
-        <button type="submit" name="user" value="all" class="link-button">
-        Plot Together
-        </button>
-    </form>
-</div>
 </div>
 <script>
     
