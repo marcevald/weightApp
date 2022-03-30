@@ -43,74 +43,31 @@
 td[colspan="2"] {
     text-align: center;
 }
-td[colspan="1"] {
+td[colspan="3"] {
     text-align: center;
 }
-
-
-
-/*
+ /* unvisited link */
 a:link {
   color: White;
 }
 
+/* visited link */
 a:visited {
   color: White;
 }
 
+/* mouse over link */
 a:hover {
   color: orange;
 }
 
+/* selected link */
 a:active {
   color: White;
 }
 a:link {
   text-decoration: none;
 }
-*/
-
-a.img:link {
-  color: black;
-}
-
-a.img:visited {
-  color: black;
-}
-
-a.img:hover {
-  color: orange;
-}
-
-a.img:active {
-  color: black;
-}
-
-a.img:link {
-  text-decoration: none;
-}
-
-/* Navigation Bar Links Styles */
-a.nav:link {
-  color: white;
-}
-
-a.nav:visited {
-  color: white;
-}
-
-a.nav:hover {
-  color: orange;
-}
-
-a.nav:active {
-  color: white;
-}
-
-a.nav:link {
-  text-decoration: none;
-}
-
 
 
 .inline {
@@ -135,7 +92,13 @@ a.nav:link {
 .link-button:hover {
   color: orange;
 }
+<<<<<<< HEAD
 
 .plotlink{
   text-align: center;
 }
+=======
+.plotlink{
+  text-align: center;
+}
+>>>>>>> 94a39bd937881f8490bebd235cf1e5957f3360e8

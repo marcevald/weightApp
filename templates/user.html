@@ -28,6 +28,7 @@
             <th>Added At</th>
             <th>Modified At</th>
             <th>Modify</th>
+            <th>Image</th>
         </tr>
     </thead>
     
@@ -44,6 +45,15 @@
                 <input type="hidden" value="{{ids[j]}}" name="id">
                 <button type="submit" name="user" class="link-button">
                 Modify Weight
+                </button>
+            </form>
+            </td>
+            {% elif i == 4 and r != "No Image" %}
+            <td> 
+            <form method="post" action="/image" class="inline">
+                <input type="hidden" value="{{r}}" name="image">
+                <button type="submit" name="user" class="link-button">
+                Image
                 </button>
             </form>
             </td>

@@ -9,6 +9,9 @@ import pymysql
 import datetime
 from operator import itemgetter
 import numpy as np
+import os
+
+
 
 def formatRows(rows):
     for r, row in enumerate(rows):
@@ -72,9 +75,28 @@ def calculateBMI(height, weight):
     bmi = weight / (height**2)
     return bmi
 
+def allowedImage(filename):
+
+    if not '.' in filename:
+        return False
+    
+    ext = filename.rsplit(".", 1)[1]
+
+    if not ext.upper() in app.config['ALLOWED_IMAGE_EXTENSIONS']:
+        return False
+
+    return True
+
+UPLOAD_FOLDER = os.path.join('static', 'uploads')
+
 app = Flask(__name__)
-#sqlEngine = create_engine('mysql+pymysql://root:root@localhost/db', echo=False)
-sqlEngine = create_engine('mysql+pymysql://pi:Me200790Hc@localhost/db', echo=False)
+
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['ALLOWED_IMAGE_EXTENSIONS'] = ["JPG", "JPEG", "PNG"]
+
+
+sqlEngine = create_engine('mysql+pymysql://root:root@localhost/db', echo=False)
+#sqlEngine = create_engine('mysql+pymysql://pi:Me200790Hc@localhost/db', echo=False)
 
 @app.route('/')
 def hello_world():    
@@ -87,8 +109,11 @@ def hello_world():
 
 @app.route('/enterweight', methods = ['POST'])
 def enterWeight():
+
     user = request.form['user']
     weight = request.form['weight']
+    if request.files:
+        image = request.files['image']
 
     if not weight:
         return "You Must Input a Valid Weight"
@@ -96,7 +121,16 @@ def enterWeight():
     time = datetime.datetime.now()
     time = f"{time.year}-{time.month}-{time.day} {time.hour}:{time.minute}:{time.second}"
 
-    insert = sqlEngine.execute(f"INSERT INTO Weights (`User`, `Weight`, `Time`) VALUES ('{user}', '{weight}', '{time}')")
+    if image.filename == "":
+            insert = sqlEngine.execute(f"INSERT INTO Weights (`User`, `Weight`, `Time`) VALUES ('{user}', '{weight}', '{time}')")
+    
+    else:
+        if allowedImage(image.filename):
+            image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
+            insert = sqlEngine.execute(f"INSERT INTO Weights (`User`, `Weight`, `Time`, `Image`) VALUES ('{user}', '{weight}', '{time}', '{image.filename}')")
+
+        else:
+            return "Image must be .jpg, .jpeg or .png format"
 
     return redirect('/')
 
@@ -195,21 +229,23 @@ def user():
     rows = frameWeights.values.tolist()
     rows = np.array(rows)
     rows = np.flip(rows, axis=0)
-    ids = rows[:, 0].copy()
-
     
+    ids = rows[:, 0].copy()
 
     rows[:, 0:2] = rows[:,1:3]
     rows[:, 2] = rows[:, 4]
     rows[:, 3] = rows[:, 0]
-    rows = rows[:, 0:4]
+    rows[:, 4] = rows[:, 5]
+    rows = rows[:, 0:5]
 
     for row in rows:
         if pd.isnull(row[2]):
-            print("not modified")
             row[2] = "Not Modified"
-        
 
+    for row in rows:
+        if row[4] == None:
+            row[4] = "No Image"
+    
     print(rows)
 
     return render_template('user.html', user=user, rows=rows, ids=ids)
@@ -234,6 +270,14 @@ def modify():
     
   
     return redirect('/')
+
+@app.route('/image', methods = ['POST'])
+def show_image():
+    filename = request.form['image']
+
+    filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+    return render_template('image.html', filename=filename)    
 
 @app.context_processor
 def inject_enumerate():
