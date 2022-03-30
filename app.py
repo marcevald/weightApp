@@ -10,7 +10,8 @@ import datetime
 from operator import itemgetter
 import numpy as np
 import os
-
+from PIL import Image
+import io
 
 
 def formatRows(rows):
@@ -110,6 +111,8 @@ def hello_world():
 @app.route('/enterweight', methods = ['POST'])
 def enterWeight():
 
+    IMAGE_SIZE = (800, 600)
+
     user = request.form['user']
     weight = request.form['weight']
     if request.files:
@@ -126,7 +129,17 @@ def enterWeight():
     
     else:
         if allowedImage(image.filename):
-            image.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
+            
+            im = Image.open(image)
+            
+
+            im = im.resize(IMAGE_SIZE)
+            
+            width, height = im.size
+
+            print(width, height)
+            
+            im.save(os.path.join(app.config['UPLOAD_FOLDER'], image.filename))
             insert = sqlEngine.execute(f"INSERT INTO Weights (`User`, `Weight`, `Time`, `Image`) VALUES ('{user}', '{weight}', '{time}', '{image.filename}')")
 
         else:
