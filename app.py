@@ -8,6 +8,7 @@ from sqlalchemy import create_engine, insert
 import pymysql 
 import datetime
 from operator import itemgetter
+import numpy as np
 
 def formatRows(rows):
     for r, row in enumerate(rows):
@@ -152,7 +153,6 @@ def plot():
 
     if user == 'all':
         
-        
         for i, user in enumerate(users):
             frameWeights = pd.read_sql(f"select * from Weights where `User` = '{user}'", con=sqlEngine)
             weights.append( list( frameWeights['Weight'] ) )
@@ -183,6 +183,57 @@ def plot():
     header="Development of Weight over Time"
     
     return render_template('plot.html', graphJSON=graphJSON, header=header)
+
+@app.route('/user', methods = ['POST'])
+def user():
+
+    user = request.form['user']
+    
+    frameWeights = pd.read_sql(f"select * from Weights where `User` = '{user}'", con=sqlEngine)
+    #frameWeights['Time'] = frameWeights['Time'].apply(lambda x: pd.Timestamp(x).strftime('%d-%m-%Y'))
+
+    rows = frameWeights.values.tolist()
+    rows = np.array(rows)
+
+    ids = rows[:, 0].copy()
+
+    
+
+    rows[:, 0:2] = rows[:,1:3]
+    rows[:, 2] = rows[:, 4]
+    rows[:, 3] = rows[:, 0]
+    rows = rows[:, 0:4]
+
+    for row in rows:
+        if pd.isnull(row[2]):
+            print("not modified")
+            row[2] = "Not Modified"
+        
+
+    print(rows)
+
+    return render_template('user.html', user=user, rows=rows, ids=ids)
+
+@app.route('/modify', methods = ['POST'])
+def modify():
+
+    user = request.form['user']
+    weight = request.form['weight']
+    Id = request.form['id']
+
+    if not weight:
+        return "You Must Input a Valid Weight"
+    
+    time = datetime.datetime.now()
+    time = f"{time.year}-{time.month}-{time.day} {time.hour}:{time.minute}:{time.second}"
+
+    modify = sqlEngine.execute(f"   UPDATE Weights \
+                                    SET `Weight` = '{weight}' \
+                                    WHERE id = {Id} \
+                                ")
+    
+  
+    return redirect('/')
 
 @app.context_processor
 def inject_enumerate():

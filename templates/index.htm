@@ -9,7 +9,18 @@
     </head>
     <body>
 
+<div class="plotlink">
+    <form method="post" action="/plot" class="inline">
+        <input type="hidden" name="plot" value="plot">
+        <button type="submit" name="user" value="all" class="link-button">
+        Plot Progress Of All Members
+        </button>
+    </form>
+</div>
+        
+
 <div class="container">
+
 <table class="styled-table">
     <thead>
         <tr>
@@ -19,7 +30,7 @@
             <th><a href="/byrel" > % Loss </a> </th>
             <th>Since Last</th>
             <th><a href="/bybmi" >BMI</a> </th>
-            <th>Added</th>
+            <th>Added At</th>
         </tr>
     </thead>
     
@@ -33,7 +44,7 @@
             {% elif i == 0 %}
             
             <td>
-            <form method="post" action="/plot" class="inline">
+            <form method="post" action="/user" class="inline">
                 <input type="hidden" name="plot" value="plot">
                 <button type="submit" name="user" value="{{r}}" class="link-button">
                 {{r}}
@@ -65,14 +76,7 @@
     </tbody>
 
 </table>
-<div class="plotlink">
-    <form method="post" action="/plot" class="inline">
-        <input type="hidden" name="plot" value="plot">
-        <button type="submit" name="user" value="all" class="link-button">
-        Plot Together
-        </button>
-    </form>
-</div>
+
 </div>
 <script>
     

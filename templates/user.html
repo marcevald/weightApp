@@ -1,0 +1,70 @@
+<html>
+    <head title="{{user}}}}">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=0.5">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="HandheldFriendly" content="true">
+    
+    <link rel="stylesheet" href="static/css/style.css">
+    </head>
+    <body>
+
+<div class="plotlink">
+    <form method="post" action="/plot" class="inline">
+        <input type="hidden" name="plot" value="plot">
+        <button type="submit" name="user" value="{{user}}" class="link-button">
+        Plot Progress
+        </button>
+    </form>
+</div>
+        
+
+<div class="container">
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>Weight</th>
+            <th>Added At</th>
+            <th>Modified At</th>
+            <th>Modify</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+            {% for j, row in enumerate(rows) %}
+        <tr>
+            {% for i, r in enumerate(row) %}
+
+            {% if i == 3 %}
+            <td>
+            <form method="post" action="/modify" class="inline">
+                <input type="number" step=0.1 value="{{r}}" name="weight">
+                <input type="hidden" value="{{user}}" name="user">
+                <input type="hidden" value="{{ids[j]}}" name="id">
+                <button type="submit" name="user" class="link-button">
+                Modify Weight
+                </button>
+            </form>
+            </td>
+            {% else %}
+            
+                {% if r == 'NaT' %}
+                    <td> <p> Not Modified </p> </td>
+                {% else %}
+                    <td> <p> {{ r }} </p> </td>
+                {% endif %}
+
+            {% endif %}
+
+            {% endfor %}
+        </tr>
+            {% endfor %}
+
+    </tbody>
+
+</table>
+
+</div>
+</body>
+</html>
